@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+import string
 import random
 
 app = Flask(__name__)
@@ -28,6 +29,13 @@ def get_all():
     if not quotes:
         return "No quotes found!", 404
     return jsonify({'quotes': quotes})
+
+@app.route("/generate", methods=["GET"])
+def add_random():
+    length = random.randint(1, 15)
+    quote = ''.join(random.choices(string.ascii_uppercase + string.digits, k=length))
+    quotes.append(quote)
+    return jsonify({'quote': quote}), 201
 
 if __name__ == "__main__":
     app.run(debug=True)
