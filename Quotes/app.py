@@ -9,15 +9,15 @@ quotes = ['quote1', 'quote2']
 def add_quote():
 	new_quote = request.json['quote']
 	quotes.append(new_quote)
-	return jsonify(quotes)
+	return jsonify({'quotes': quotes})
 
 @app.route('/getquotes', methods=['GET'])
 def get_quotes():
-	return jsonify({'quote': quotes})
+	return jsonify({'quotes': quotes})
 
 @app.route('/randomquote', methods=['GET'])
 def random_quote():
-    return jsonify({'quote': random.choice(quotes)})
+    return jsonify({'quotes': random.choice(quotes)})
 
 if __name__=='__main__':
 	app.run(debug = True)
