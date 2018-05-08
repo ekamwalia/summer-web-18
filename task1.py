@@ -1,6 +1,5 @@
 from flask import Flask
 from flask import jsonify, request
-import json
 from random import randint
 task1=Flask(__name__)
 quote=[]
