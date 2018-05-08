@@ -8,7 +8,7 @@ qoute = ["q1","q2","q3","q4"]
 
 @app.route('/')
 def intro():
-    return 'Welcome to this page please enter a preffered choice 1)generate a random qoute,2)add a qoute,3)show all qoutes'
+    return 'Welcome to this page please enter a preffered choice 1)generate a random qoute,2)add a qoute,3)show all the qoutes'
 
 @app.route('/hello')
 def hello():
@@ -29,7 +29,4 @@ def new():
 	data=request.get_json(force=True)
 	qoute.append(data)
         return jsonify({'quote added':data})
-
-
-
 
