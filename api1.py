@@ -28,7 +28,7 @@ def rand_qoutes():
 def new():
 	data=request.get_json(force=True)
 	qoute.append(data)
-
+        return jsonify({'quote added':data})
 
 
 
