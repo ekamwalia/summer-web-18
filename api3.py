@@ -21,8 +21,7 @@ def all_qoutes():
 
 @app.route('/randqoute',methods=['GET'])
 def rand_qoutes():
-	a=randint(0,3)
-	return jsonify(qoute[a])
+	return jsonify({'quote': random.choice(qoute)})
 
 @app.route('/addnew',methods=['POST'])
 def new():
