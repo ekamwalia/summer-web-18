@@ -1,0 +1,23 @@
+{
+  "name": "summer-web-18",
+  "version": "1.0.0",
+  "description": "Summer Web Project for IECSE",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kelsier27/summer-web-18.git"
+  },
+  "author": "Vedant Jain",
+  "bugs": {
+    "url": "https://github.com/kelsier27/summer-web-18/issues"
+  },
+  "homepage": "https://github.com/kelsier27/summer-web-18#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "nodemon": "^1.17.4"
+  }
+}
