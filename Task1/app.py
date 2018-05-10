@@ -1,4 +1,4 @@
-from flask import Flask, json
+from flask import Flask, json, request
 from random import randint
 app=Flask(__name__)
 
@@ -10,7 +10,7 @@ def hello():
 
 @app.route ("/add", methods=['GET', 'POST'])
 def add():
-	quotes.append ("appended quote")
+	quotes.append (request.get_json())
 	return "Quote appended"
 
 @app.route ("/random")
