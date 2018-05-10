@@ -10,7 +10,7 @@ def hello():
 
 @app.route ("/add", methods=['GET', 'POST'])
 def add():
-	quotes.append (request.get_json())
+	quotes.append (request.get_json()["quote"])
 	return "Quote appended"
 
 @app.route ("/random")
