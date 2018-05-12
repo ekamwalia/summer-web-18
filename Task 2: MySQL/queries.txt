@@ -42,6 +42,7 @@ CREATE TABLE depositor (
      FOREIGN KEY (account_number) REFERENCES account(account_number) 
 );
 
+
 //Insertion Queries
 
 INSERT INTO branch VALUES (
