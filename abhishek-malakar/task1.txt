@@ -1,0 +1,142 @@
+mysql> show DATABASES
+    -> ;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| myflaskapp         |
+| mysql              |
+| performance_schema |
+| sys                |
+| test               |
++--------------------+
+6 rows in set (0.06 sec)
+
+mysql> CREATE web-summer;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'web-summer' at line 1
+mysql> create database web-summer;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-summer' at line 1
+mysql> CREATE DATABASE web-summer;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-summer' at line 1
+mysql> CREATE DATABASE web_summer;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> use web_summer
+Database changed
+mysql> create table branch(branch_name VARCHAR(30) PRIMARY KEY,branch_city NAME(50), assets VARCHAR(3000));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'NAME(50), assets VARCHAR(3000))' at line 1
+mysql> create table branch(branch_name VARCHAR(30) PRIMARY KEY,branch_city VARCHAR(50), assets VARCHAR(3000));
+Query OK, 0 rows affected (0.82 sec)
+
+mysql> insert into branch values('wadala','mumbai','43 cars 24 bikes 11 buses'),('Andheri','Mumbai','Cars and scooters')
+    -> ;
+Query OK, 2 rows affected (0.10 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from branch
+    -> ;
++-------------+-------------+---------------------------+
+| branch_name | branch_city | assets                    |
++-------------+-------------+---------------------------+
+| Andheri     | Mumbai      | Cars and scooters         |
+| wadala      | mumbai      | 43 cars 24 bikes 11 buses |
++-------------+-------------+---------------------------+
+2 rows in set (0.00 sec)
+
+mysql> create table customer(Customer_name VARCHAR(50) PRIMARY KEY, customer_street VARCHAR(30), customer_city VARCHAR(30));
+Query OK, 0 rows affected (0.74 sec)
+
+mysql> insert into customer Values('Abhsihek','Powai','Mumbai');
+Query OK, 1 row affected (0.06 sec)
+
+mysql> select * from customers;
+ERROR 1146 (42S02): Table 'web_summer.customers' doesn't exist
+mysql> select * from customer;
++---------------+-----------------+---------------+
+| Customer_name | customer_street | customer_city |
++---------------+-----------------+---------------+
+| Abhsihek      | Powai           | Mumbai        |
++---------------+-----------------+---------------+
+1 row in set (0.00 sec)
+
+mysql> create table loan(loan_number VARCHAR(100) PRIMARY KEY, branch_name VARCHAR(100), amount INTEGER(150));
+Query OK, 0 rows affected (0.24 sec)
+
+mysql> show table loan;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'loan' at line 1
+mysql> show loan
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'loan' at line 1
+mysql> describe loan;
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| loan_number | varchar(100) | NO   | PRI | NULL    |       |
+| branch_name | varchar(100) | YES  |     | NULL    |       |
+| amount      | int(150)     | YES  |     | NULL    |       |
++-------------+--------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> create tables borrower(customer_name VARCHAR(30) PRIMARY KEY, loan_number VARCHAR(100) FOREIGN KEY);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'tables borrower(customer_name VARCHAR(30) PRIMARY KEY, loan_number VARCHAR(100) ' at line 1
+mysql> create table borrower(customer_name VARCHAR(30) PRIMARY KEY, loan_number VARCHAR(100) FOREIGN KEY);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FOREIGN KEY)' at line 1
+mysql> create table borrower(customer_name VARCHAR(30) PRIMARY KEY, loan_number VARCHAR(100) FOREIGN KEY REFERENCES loan(loan_number));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FOREIGN KEY REFERENCES loan(loan_number))' at line 1
+mysql> create table borrower(customer_name VARCHAR(30) PRIMARY KEY, loan_number VARCHAR(100));
+Query OK, 0 rows affected (0.22 sec)
+
+mysql> ALTER TABLE borrower
+    -> ADD FOREIGN KEY (loan_number) REFERENCES loan(loan_number);
+Query OK, 0 rows affected (0.60 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> describe borrower;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| customer_name | varchar(30)  | NO   | PRI | NULL    |       |
+| loan_number   | varchar(100) | YES  | MUL | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> create table account(account_number INT(50) PRIMARY KEY, branch_name VARCHAR(50), balance INT(100));
+Query OK, 0 rows affected (0.23 sec)
+
+mysql> describe account;
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| account_number | int(50)     | NO   | PRI | NULL    |       |
+| branch_name    | varchar(50) | YES  |     | NULL    |       |
+| balance        | int(100)    | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> create table depositor(customer_name VARCHAR(100) PRIMARY KEY, account_number INT(50) FOREIGN KEY REFERENCES account(account_number));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FOREIGN KEY REFERENCES account(account_number))' at line 1
+mysql> create table depositor(customer_name VARCHAR(100) PRIMARY KEY, account_number INT(50));
+Query OK, 0 rows affected (0.22 sec)
+
+mysql> Alter Table depositor 
+    -> ALTER TABLE depositor ADD FOREIGN KEY (account_number) REFERENCES account(account_number);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'TABLE depositor ADD FOREIGN KEY (account_number) REFERENCES account(account_numb' at line 2
+mysql> Alter Table depositor ALTER TABLE depositor ADD FOREIGN KEY (account_number) REFERENCES account(account_number);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'TABLE depositor ADD FOREIGN KEY (account_number) REFERENCES account(account_numb' at line 1
+mysql> ALTER TABLE depositor ADD FOREIGN KEY (account_number) REFERENCES account(account_number);
+Query OK, 0 rows affected (0.61 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> describe despositor;
+ERROR 1146 (42S02): Table 'web_summer.despositor' doesn't exist
+mysql> describe depositor;
++----------------+--------------+------+-----+---------+-------+
+| Field          | Type         | Null | Key | Default | Extra |
++----------------+--------------+------+-----+---------+-------+
+| customer_name  | varchar(100) | NO   | PRI | NULL    |       |
+| account_number | int(50)      | YES  | MUL | NULL    |       |
++----------------+--------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> 
+
