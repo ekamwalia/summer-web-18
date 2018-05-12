@@ -1,0 +1,44 @@
+CREATE DATABASE task2;
+
+USE task2;
+
+CREATE TABLE branch ( 
+     branch_name VARCHAR(20) NOT NULL PRIMARY KEY, 
+     branch_city VARCHAR(20), 
+     assets      VARCHAR(80) 
+); 
+
+CREATE TABLE customer ( 
+     customer_name   VARCHAR(20) NOT NULL PRIMARY KEY, 
+     customer_street VARCHAR(80), 
+     customer_city   VARCHAR(20) 
+);
+
+CREATE TABLE loan ( 
+     loan_number INT NOT NULL PRIMARY KEY, 
+     branch_name VARCHAR(20), 
+     amount      INT, 
+     FOREIGN KEY (branch_name) REFERENCES branch(branch_name) 
+);
+
+CREATE TABLE borrower ( 
+     customer_name VARCHAR(20) NOT NULL PRIMARY KEY, 
+     loan_number   INT NOT NULL, 
+     FOREIGN KEY (loan_number) REFERENCES loan(loan_number) 
+);
+
+CREATE TABLE account ( 
+     account_number INT NOT NULL PRIMARY KEY, 
+     branch_name    VARCHAR(20), 
+     balance        INT, 
+     FOREIGN KEY (branch_name) REFERENCES branch(branch_name) 
+);
+
+CREATE TABLE depositor ( 
+     customer_name  VARCHAR(20) NOT NULL PRIMARY KEY, 
+     account_number INT NOT NULL, 
+     FOREIGN KEY (account_number) REFERENCES account(account_number) 
+);
+
+
+
