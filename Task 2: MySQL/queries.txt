@@ -2,6 +2,8 @@ CREATE DATABASE task2;
 
 USE task2;
 
+// Creation Queries
+
 CREATE TABLE branch ( 
      branch_name VARCHAR(20) NOT NULL PRIMARY KEY, 
      branch_city VARCHAR(20), 
@@ -40,5 +42,39 @@ CREATE TABLE depositor (
      FOREIGN KEY (account_number) REFERENCES account(account_number) 
 );
 
+//Insertion Queries
+
+INSERT INTO branch VALUES (
+	"Gringotts", 
+	"London", 
+	"314175"
+);
+
+INSERT INTO customer VALUES (
+	"Sherlock Holmes", 
+	"Baker Street", 
+	"London"
+);
+
+INSERT INTO loan VALUES (
+	271828, 
+	"Gringotts", 
+	10
+);
+
+INSERT INTO borrower VALUES (
+	"Dr. Watson", 
+	271828
+);
+
+INSERT INTO account VALUES (
+	12345, 
+	"Gringotts", 
+	10
+);
 
 
+INSERT INTO depositor VALUES (
+	"Darth Vader", 
+	12345
+);
