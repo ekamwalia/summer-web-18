@@ -39,6 +39,3 @@ CREATE TABLE depositor (
      account_number INT NOT NULL, 
      FOREIGN KEY (account_number) REFERENCES account(account_number) 
 );
-
-
-
