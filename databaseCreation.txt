@@ -1,0 +1,109 @@
+MariaDB [(none)]> create database summer_web_project;
+Query OK, 1 row affected (0.01 sec)
+
+MariaDB [(none)]> use summer_web_project;
+Database changed
+MariaDB [summer_web_project]> CREATE TABLE branch(branch_name VARCHAR(100) ,branch_city VARCHAR(100) ,assets VARCHAR(100), PRIMARY KEY (branch_name));
+Query OK, 0 rows affected (0.69 sec)
+
+MariaDB [summer_web_project]> CREATE TABLE customer(customer_name VARCHAR(100), customer_street VARCHAR(100), customer_city VARCHAR(100), PRIMARY KEY(customer_name));Query OK, 0 rows affected (0.33 sec)
+
+MariaDB [summer_web_project]> CREATE TABLE loan ( loan_number INT, branch_name VARCHAR(100), amount INT, PRIMARY KEY(loan_number));
+Query OK, 0 rows affected (0.70 sec)
+
+MariaDB [summer_web_project]> CREATE TABLE borrower ( customer_name VARCHAR(100), loan_number INT, PRIMARY KEY(customer_name,loan_number));
+Query OK, 0 rows affected (0.72 sec)
+
+MariaDB [summer_web_project]> CREATE TABLE account ( account_number INT, branch_name VARCHAR(100), balance INT, PRIMARY KEY(account_number));
+Query OK, 0 rows affected (0.69 sec)
+
+MariaDB [summer_web_project]> CREATE TABLE depositor (customer_name VARCHAR(100), account_number INT, PRIMARY KEY(customer_name,account_number));
+Query OK, 0 rows affected (0.32 sec)
+
+MariaDB [summer_web_project]> ALTER TABLE borrower ADD FOREIGN KEY (customer_name) REFERENCES customer(customer_name);
+Query OK, 0 rows affected (1.45 sec)               
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [summer_web_project]> ALTER TABLE borrower ADD FOREIGN KEY (loan_number) REFERENCES loan(loan_number);
+Query OK, 0 rows affected (1.13 sec)               
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [summer_web_project]> ALTER TABLE depositor ADD FOREIGN KEY (customer_name) REFERENCES customer(customer_name);
+Query OK, 0 rows affected (1.07 sec)               
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [summer_web_project]> ALTER TABLE depositor ADD FOREIGN KEY (account_number) REFERENCES account( account_number);
+Query OK, 0 rows affected (1.16 sec)               
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [summer_web_project]> INSERT INTO branch VALUES ('Goregaon' , 'Mumbai', '20 cars, Real estate') , ('Andheri', 'Mumbai', '14 cars, Real estate');
+Query OK, 2 rows affected (0.47 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+MariaDB [summer_web_project]> INSERT INTO customer VALUES ('Ekam Walia' , 'Shanti Path', 'Delhi') , ('Aritra Basu', 'Park Street', 'Kolkata');
+Query OK, 2 rows affected (0.08 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+MariaDB [summer_web_project]> INSERT INTO loan VALUES (001 , 'Goregaon', 100000);
+Query OK, 1 row affected (0.09 sec)
+
+MariaDB [summer_web_project]> INSERT INTO borrower VALUES ('Ekam Walia', 001);
+Query OK, 1 row affected (0.45 sec)
+
+MariaDB [summer_web_project]> INSERT INTO account VALUES (17211, 'Goregaon', 500000), (17212, 'Andheri', 500000);
+Query OK, 2 rows affected (0.46 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+MariaDB [summer_web_project]> INSERT INTO depositor VALUES ('Aritra Basu', 17212);
+Query OK, 1 row affected (0.45 sec)
+
+MariaDB [summer_web_project]> SELECT * FROM branch;
++-------------+-------------+----------------------+
+| branch_name | branch_city | assets               |
++-------------+-------------+----------------------+
+| Andheri     | Mumbai      | 14 cars, Real estate |
+| Goregaon    | Mumbai      | 20 cars, Real estate |
++-------------+-------------+----------------------+
+2 rows in set (0.00 sec)
+
+MariaDB [summer_web_project]> SELECT * FROM customer;
++---------------+-----------------+---------------+
+| customer_name | customer_street | customer_city |
++---------------+-----------------+---------------+
+| Aritra Basu   | Park Street     | Kolkata       |
+| Ekam Walia    | Shanti Path     | Delhi         |
++---------------+-----------------+---------------+
+2 rows in set (0.00 sec)
+
+MariaDB [summer_web_project]> SELECT * from loan;
++-------------+-------------+--------+
+| loan_number | branch_name | amount |
++-------------+-------------+--------+
+|           1 | Goregaon    | 100000 |
++-------------+-------------+--------+
+1 row in set (0.00 sec)
+
+MariaDB [summer_web_project]> SELECT * FROM borrower;
++---------------+-------------+
+| customer_name | loan_number |
++---------------+-------------+
+| Ekam Walia    |           1 |
++---------------+-------------+
+1 row in set (0.00 sec)
+
+MariaDB [summer_web_project]> SELECT * FROM account;
++----------------+-------------+---------+
+| account_number | branch_name | balance |
++----------------+-------------+---------+
+|          17211 | Goregaon    |  500000 |
+|          17212 | Andheri     |  500000 |
++----------------+-------------+---------+
+2 rows in set (0.00 sec)
+
+MariaDB [summer_web_project]> SELECT * from depositor;
++---------------+----------------+
+| customer_name | account_number |
++---------------+----------------+
+| Aritra Basu   |          17212 |
++---------------+----------------+
+1 row in set (0.00 sec)
