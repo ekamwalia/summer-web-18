@@ -1,0 +1,46 @@
+CREATE TABLE branch (
+    branch_name VARCHAR(50) NOT NULL,
+    branch_city VARCHAR(25) NOT NULL,
+    assets VARCHAR(25) NOT NULL,
+    PRIMARY KEY (branch_name)
+);
+
+CREATE TABLE customer (
+    customer_name VARCHAR(30) NOT NULL,
+    customer_street VARCHAR(20) NOT NULL,
+    customer_city VARCHAR(10) NOT NULL,
+    PRIMARY KEY (customer_name)
+);
+
+CREATE TABLE loan (
+    loan_number INT NOT NULL,
+    branch_name VARCHAR(50) NOT NULL,
+    amount FLOAT NOT NULL,
+    PRIMARY KEY (loan_number),
+    FOREIGN KEY (branch_name) references branch(branch_name)
+);
+
+CREATE TABLE borrower (
+    customer_name VARCHAR(30) NOT NULL,
+    loan_number INT NOT NULL,
+    PRIMARY KEY (customer_name),
+    FOREIGN KEY (customer_name) REFERENCES customer(customer_name),
+    FOREIGN KEY (loan_number) REFERENCES loan(loan_number)
+);
+
+CREATE TABLE account (
+    account_number INT NOT NULL,
+    branch_name VARCHAR(50) NOT NULL,
+    balance FLOAT NOT NULL,
+    PRIMARY KEY (account_number),
+    FOREIGN KEY branch_name REFERENCES branch(branch_name)
+);
+
+CREATE TABLE depositor (
+    customer_name VARCHAR(30) NOT NULL,
+    account_number INT NOT NULL,
+    PRIMARY KEY (customer_name),
+    FOREIGN KEY (customer_name) REFERENCES customer(customer_name),
+    FOREIGN KEY (account_number) REFERENCES account(account_number)
+);
+
