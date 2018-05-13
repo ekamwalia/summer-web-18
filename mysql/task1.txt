@@ -1,0 +1,6 @@
+create table branch (branch_name varchar(100) primary key, branch_city varchar(100), assets integer);
+create table customer (customer_name varchar(100) primary key, customer_street varchar(100), customer_city varchar(100));
+create table loan (loan_number integer primary key, branch_name varchar(100), amount integer);
+create table borrower (customer_name varchar(100) primary key, loan_number integer);
+create table account (account_number integer primary key, branch_name varchar(100), balance integer);
+create table depositor (customer_name varchar(100) primary key, account_number integer);
