@@ -1,0 +1,34 @@
+ CREATE TABLE Branch( 
+ branch_name VARCHAR(255),
+ branch_city VARCHAR(255), 
+ assets INT(6), 
+ PRIMARY KEY(branch_name));
+
+ CREATE TABLE Customer( 
+ customer_name VARCHAR(255),
+ customer_street VARCHAR(255), 
+ customer_city VARCHAR(255), 
+ PRIMARY KEY (customer_name));
+
+ CREATE TABLE Loan(
+ loan_number INT(5),
+ branch_name VARCHAR(255),
+ amount INT(5),
+ PRIMARY KEY (loan_number));
+
+ CREATE TABLE Borrower( 
+ customer_name VARCHAR(255), 
+ loan_number INT(5), 
+ PRIMARY KEY (loan_number,customer_name));
+
+ CREATE TABLE Account(
+ account_number INT(5),
+ branch_name VARCHAR(255),
+ balance INT(6),
+ PRIMARY KEY (account_number));
+
+ CREATE TABLE Depositor(
+ customer_name VARCHAR(255),
+ account_number INT(5),
+ PRIMARY KEY(customer_name,account_number));
+ 
