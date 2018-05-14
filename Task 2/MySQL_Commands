@@ -1,0 +1,46 @@
+mysql> use Task_2;
+Database changed
+mysql> create table branch
+    -> ( branch_name char(30) primary key,
+    -> branch_city char(20));
+Query OK, 0 rows affected (0.18 sec)
+
+mysql> drop table branch;
+Query OK, 0 rows affected (0.13 sec)
+
+mysql> create table branch
+    -> ( branch_name char(30) not null primary key,
+    -> branch_city char(20),
+    -> assets int);
+Query OK, 0 rows affected (0.20 sec)
+
+mysql> create table customer
+    -> (customer_name char(30) not null primary key,
+    -> customer_street char(30),
+    -> cutomer_city char(20));
+Query OK, 0 rows affected (0.23 sec)
+
+mysql> create table borrower
+    -> (customer_name char(30) not null,
+    -> loan_number int not null,
+    -> primary key (customer_name,loan_number));
+Query OK, 0 rows affected (0.21 sec)
+
+mysql> create table loan
+    -> (loan_number int not null primary key,
+    -> branch_name char(30),
+    -> amount int);
+Query OK, 0 rows affected (0.18 sec)
+
+mysql> create table account
+    -> (account_number int not null primary key,
+    -> branch_name char(30),
+    -> balance int);
+Query OK, 0 rows affected (0.19 sec)
+
+mysql> create table depositor
+    -> (customer_name char(30),
+    -> account_number int not null,
+    -> primary key (customer_name,account_number));
+Query OK, 0 rows affected (0.20 sec)
+
