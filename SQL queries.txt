@@ -1,0 +1,28 @@
+  create table branch (
+     branch_name varchar(20) primary key not null,
+     branch_city varchar(20) not null,
+     assets varchar(20) not null );
+
+ create table customer (
+     customer_name int primary key not null,
+     customer_street varchar(20) not null,
+     customer_city varchar(20) not null );
+
+ create table loan (
+       loan_number int primary key not null,
+       branch_name varchar(20) references branch(branch_name) on delete cascade,
+       amount int not null );
+
+create table borrower(
+      customer_name varchar(20) references customer(customer_name),
+      loan_number int references loan(loan_number) );
+
+create table account (
+     account_number int primary key not null,
+     branch_name varchar(20) references branch(branch_name) on delete cascade,
+     balance int not null );
+
+create table depositor(
+    customer_name varchar(20) references customer(customer_name) on delete cascade,
+    account_number int references account(account_name) on delete cascade );
+
