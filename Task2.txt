@@ -1,0 +1,20 @@
+create database bank;
+use bank;
+create table branch (branch_name varchar (255) not null, branch_city varchar (255), assets int, primary key (branch_name));
+create table customer (customer_name varchar (255) not null, customer_street varchar (255), customer_city varchar (255), primary key (customer_name));
+create table loan (loan_number int, branch_name varchar (255), amount int, primary key (loan_number));
+create table borrower (customer_name varchar (255), loan_number int, primary key (customer_name));
+create table account (account_number int, branch_name varchar (255), balance int, primary key (account_number));
+create table depositor (customer_name varchar (255), account_number int, primary key (customer_name));
+
+insert into branch (branch_name, branch_city, assets) values ("Delhi Branch", "New Delhi", 100000);
+insert into customer(customer_name, customer_street, customer_city) values ("John Doe", "Doe street", "Doecity");
+insert into loan (loan_number, branch_name, amount) values (1234,"delhi branch", 100);
+insert into borrower (customer_name, loan_number) values ("john doe", 1234);
+insert into account (account_number, branch_name, balance) values (1234, "delhi branch", 100);
+insert into depositor(customer_name, account_number) values ("John Doe", 1234);
+
+insert into depositor(customer_name, account_number) values ("Jane Doe", 4321);
+SELECT * FROM depositor WHERE customer_name="Jane Doe";
+update depositor set account_number =6789 where customer_name="Jane Doe";
+delete from depositor where customer_name="Jane Doe";
