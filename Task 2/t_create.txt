@@ -1,0 +1,48 @@
+mysql> create database bank;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> use bank;
+Database changed
+mysql> create table branch (branch_name varchar (255) not null, branch_city varchar (255), assets int, primary key (branch_name));
+Query OK, 0 rows affected (0.39 sec)
+
+mysql> create table customer (customer_name varchar (255) not null, customer_street varchar (255), customer_city varchar (255), primary key (customer_name));
+Query OK, 0 rows affected (0.27 sec)
+
+
+mysql> CREATE TABLE loan (
+    -> loan_number varchar (255) not null,
+    -> branch_name varchar (255),
+    -> amount int,
+    -> PRIMARY KEY (loan_number)
+    -> );
+Query OK, 0 rows affected (0.29 sec)
+
+mysql> create table borrower (customer_name varchar (255), loan_number int, primary key (customer_name));
+Query OK, 0 rows affected (0.28 sec)
+
+mysql> create table account (account_number int, branch_name varchar (255), balance int, primary key (account_number));
+Query OK, 0 rows affected (0.24 sec)
+
+mysql> create table depositor (customer_name varchar (255), account_number int, primary key (customer_name));
+Query OK, 0 rows affected (0.29 sec)
+
+mysql> insert into branch (branch_name, branch_city, assets) values ("Pune Branch", "Pune", 250000);
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into customer(customer_name, customer_street, customer_city) values ("Lucy Skye", "221B Baker Street", "Mumbai");
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into loan(loan_number, branch_name, amount) values (314159, "Pune Branch", 50000
+    -> );
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into borrower (customer_name, loan_number) values ("Lucy Skye", 314159);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into account (account_number, branch_name, balance) values (55565, "calcutta branch", 52100);
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into depositor(customer_name, account_number) values ("Dexter Halle", 61354);
+Query OK, 1 row affected (0.05 sec)
+
