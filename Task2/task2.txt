@@ -1,0 +1,22 @@
+mysql> create database BankingProfo;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> use BankingProfo;
+Database changed
+mysql> CREATE TABLE branch ( branch_name varchar(30), branch_city varchar(20), assets varchar(20), PRIMARY KEY (branch_name) );
+Query OK, 0 rows affected (0.21 sec)
+
+mysql> CREATE TABLE customer ( customer_name varchar(20), customer_street varchar(20), customer_city varchar(20), PRIMARY KEY (customer_name) );
+Query OK, 0 rows affected (0.20 sec)
+
+mysql> CREATE TABLE loan (loan_number int, branch_name varchar (20), amount int, PRIMARY KEY (loan_number) );
+Query OK, 0 rows affected (0.20 sec)
+
+mysql> CREATE TABLE borrower (customer_name varchar(30), loan_number int, PRIMARY KEY (customer_name, loan_number) );
+Query OK, 0 rows affected (0.23 sec)
+
+mysql> CREATE TABLE account (account_number int, branch_name varchar (30), balance int, PRIMARY KEY (account_number) );
+Query OK, 0 rows affected (0.22 sec)
+
+mysql> CREATE TABLE depositor (customer_name varchar(30), account_number int, PRIMARY KEY (customer_name, account_number) );
+Query OK, 0 rows affected (0.24 sec)
