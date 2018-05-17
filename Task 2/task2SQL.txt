@@ -1,0 +1,47 @@
+MySQL codes:
+
+1)
+select loan_no from loan where branch_name='Perryridge' and amount>1200;
+
+2)
+select borrow.customer_name, loan.loan_no, loan.amount from borrow, loan where loan.loan_no=borrow.loan_no and loan.branch_name='Perridge';
+
+3)
+select banch_name from branch where assets>(select assets from customer where customer_city='Brooklyn');
+
+4)
+select customer_name from customer where customer_street like '%Main%';
+
+5)
+select borrow.customer_name from borrow inner join loan on borrow.loan_no=loan.loan_no where loan.branch_name='Perryridge' order by borrow.customer_name;
+
+6)
+select avg(balance) from account where branch='Perryridge';
+
+7)
+select count(*) from customer;
+
+8)
+select count(*) from depositor;
+
+9)
+select account.branch_name, count(*) from depositor, account where depositor.account_no= account.account_no group by account.branch_name;
+
+10)
+select branch_name from account group by branch_name having avg(balance)>1200;
+
+11)
+select borrow.customer_name from borrow inner join depositor on depositor.customer_name=borrow.customer_name;
+
+12)
+select borrow.customer_name from borrow left join depositor on depositor.customer_name=borrow.customer_name where depositor.customer_name is null;
+
+13)
+select borrow.customer_name from borrow inner join (select depositor.customer_name from depositor join account on depositor.account_no=account.account_no where account.branch_name='Perryridge') as t on borrow.customer_name=t.customer_name;
+
+
+14)
+select branch_name from account where balance=(select max(balance) from account);
+
+15)
+select customer_name from account where branch_name='Perryridge';
