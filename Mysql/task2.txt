@@ -1,0 +1,33 @@
+mysql> CREATE TABLE branch(branch_name VARCHAR(30) NOT NULL, branch_city VARCHAR(50) NOT NULL, assets INT UNSIGNED);
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> CREATE TABLE customer(customer_name VARCHAR(30) NOT NULL, customer_street VARCHAR(50) NOT NULL,customer_city char(2) NOT NULL DEFAULT "MN");
+Query OK, 0 rows affected (0.11 sec)
+
+mysql> CREATE TABLE loan(loan_no INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY, branch_name VARCHAR(30) NOT NULL, amount DOUBLE UNSIGNED);
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> CREATE TABLE borrow(customer_name VARCHAR(30) NOT NULL,loan_no INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY);
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> CREATE TABLE account(account_no INT UNSIGNED NOT NULL PRIMARY KEY, branch_name VARCHAR(30) NOT NULL, balance DOUBLE UNSIGNED);
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> CREATE TABLE depositor(customer_name VARCHAR(30) NOT NULL,account_no INT UNSIGNED NOT NULL PRIMARY KEY);
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> drop table absences,classes,scores,students,tests;
+Query OK, 0 rows affected (0.12 sec)
+
+mysql> show tables;
++-----------------+
+| Tables_in_iecse |
++-----------------+
+| account         |
+| borrow          |
+| branch          |
+| customer        |
+| depositor       |
+| loan            |
++-----------------+
+6 rows in set (0.00 sec)
