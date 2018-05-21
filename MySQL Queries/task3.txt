@@ -1,0 +1,52 @@
+1.
+select loan_no from loan where branch_name="Perryridge" and amount>1200;
+
+2.
+select borrower.customer name, loan.loan_no, loan.amount from borrower, loan where borrower.loan_no=loan.loan_no and loan.branch_name="Perryridge";
+
+3.
+select branch_name from branch where branch.assets>(select assets from branch where branch_city="Brooklyn");
+
+4.
+select customer_name from customer where customer_street like "%main%";
+
+5.
+select borrower.customer_name from borrower where borrower.loan_no=loan.loan_no and loan.branch_name="Perryridge" order by borrower.customer_name;
+
+6.
+select avg(account.balance) as average from account where account.branch_name="Perryridge";
+
+7.
+select count (*) from customer;
+
+8.
+select count (*) from depositor;
+
+9.
+select account.branch_name, count (*) from account inner join depositor on account.account_no=depositor.account_no group by account.branch_name;
+
+10.
+select branch_name from account group by branch_name having avg(balance)>1200;
+
+11.
+select borrower.customer_name from borrower inner join depositor on depositor.customer_name=borrower.customer_name;
+
+12.
+select borrower.customer_name from borrower left join depositor on depositor.customer_name=borrower.customer_name where depositor.customer_name is null;
+
+13.
+select borrower.customer_name from borrower inner join depositor on depositor.customer_name=borrower.customer_name where depositor.account_no=account.account_no and account.branch_name=“Perryridge”;
+
+14.
+select branch_name from account where balance=(select max(balance) from account);
+
+15.
+select customer_name from depositor group by customer_name having count(*)<2 depositor natural join account where account.branch_name="Perryridge";
+
+
+
+
+
+
+
+
