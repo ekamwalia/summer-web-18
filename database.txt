@@ -1,0 +1,10 @@
+mysql> create database web_summer;
+mysql> use web_summer;
+
+mysql> create table branch (branch_name varchar(30) primary key, branch_city varchar(20), assets int);
+mysql> create table customer (customer_name varchar(30) primary key, customer_street varchar(30), customer_city varchar(30));
+mysql> create table loan (loan_number int primary key, branch_number int, amount int);
+mysql> create table borrower (customer_name varchar(30) primary key, loan_number int primary key);
+mysql> create table borrower (customer_name varchar(30), loan_number int, primary key(customer_name, loan_number));
+mysql> create table account (account_name varchar(30) primary key, branch_name varchar(30), balance int);
+mysql> create table depositor (customer_name varchar(30), account_number int, primary key(customer_name, account_number));
