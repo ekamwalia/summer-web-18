@@ -1,0 +1,54 @@
+MySQL Queries:
+
+1.
+select loan_number from loan where branch_name='Perryridge' and amount>1200;
+
+2.
+select borrower.customer_name, loan.loan_no, loan.amount from borrow, loan where loan.loan_number=borrower.loan_number and loan.branch_name='Perryridge';
+
+3.
+select branch_name from branch where assets > some (select assets from branch where
+branch_city = 'Brooklyn');
+
+4.
+select customer_name from customer where customer_street like %main% or'%Main%';
+
+5.
+select distinct customer_name from borrower NATURAL JOIN loan where branch_name =
+'Perryridge' order by customer_name;
+
+6.
+. select avg (balance) from account where branch_name = 'Perryridge';
+
+7.
+select count(*) from customer;
+
+8.
+select count (distinct customer_name) from depositor;
+
+9.
+select branch_name, count (distinct customer_name) from depositor NATURAL JOIN
+account group by branch_name;
+
+10.
+select branch_name, avg (balance) from account group by branch_name having avg
+(balance) > 1200;
+
+11.
+select distinct customer_name from borrower where customer_name in (select
+customer_name from depositor );
+
+12.
+select distinct customer_name from borrower where customer_name not in (select
+customer_name from depositor );
+
+13.
+select customer_name from borrower natural join (select customer_name from depositor natural join account where account.branch_name ="Perryridge");
+
+14.
+select branch_name, balance from account where balance=(select max(balance) from
+account);
+
+15.
+select customer_name from depositor NATURAL JOIN account where branch_name =
+‘Perryridge’ group by customer_name having count(account_number) <= 1;
