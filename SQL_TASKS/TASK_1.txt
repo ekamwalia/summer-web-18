@@ -1,0 +1,277 @@
+mysql> create database x3base;
+Query OK, 1 row affected (0.08 sec)
+
+mysql> use x3base;
+Database changed
+mysql> CREATE TABLE branch (
+    -> branch_name varchar(255) NOT NULL,
+    -> branch_city varchar(255) NOT NULL,
+    -> assests varchar(255),
+    -> PRIMARY KEY (branch_name)
+    -> );
+Query OK, 0 rows affected (0.44 sec)
+
+mysql> CREATE TABLE customer (
+    -> customer_name varchar(255) NOT NULL,
+    -> customer_street varchar(255) NOT NULL,
+    -> customer_city varchar(255) NOT NULL,
+    -> PRIMARY KEY (customer_name)
+    -> );
+Query OK, 0 rows affected (0.30 sec)
+
+mysql> CREATE TABLE loan (
+    -> loan_number int NOT NULL,
+    -> branch_name varchar(255) NOT NULL,
+    -> amount int NOT NULL,
+    -> PRIMARY KEY (loan_number),
+    -> FOREIGN KEY (branch_name) REFERENCES branch(branch_name)
+    -> );
+Query OK, 0 rows affected (0.64 sec)
+
+mysql> CREATE TABLE borrower (
+    -> customer_name varchar(255) NOT NULL,
+    -> loan_number int NOT NULL,
+    -> FOREIGN KEY (customer_name) REFERENCES customer(customer_name)
+    -> );
+Query OK, 0 rows affected (0.51 sec)
+
+mysql> ALTER TABLE borrower
+    -> ADD FOREIGN KEY (loan_number) REFERENCES loan(loan_number);
+Query OK, 0 rows affected (1.55 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> CREATE TABLE account (
+    -> acccount_number int NOT NULL,
+    -> branch_name varchar(255) NOT NULL,
+    -> balance int NOT NULL,
+    -> PRIMARY KEY (account_number),
+    -> FOREIGN KEY (branch_name) REFERENCES branch(branch_name)
+    -> );
+ERROR 1072 (42000): Key column 'account_number' doesn't exist in table
+mysql> CREATE TABLE depositor (
+    -> customer_name varchar(255) NOT NULL,
+    -> account_number int NOT NULL,
+    -> CONSTRAINT pk_depositor PRIMARY KEY (customer_name,account_number),
+    -> FOREIGN KEY (customer_name) REFERENCES customer(customer_name)
+    -> );
+Query OK, 0 rows affected (0.65 sec)
+
+mysql> ALTER TABLE depositor
+    -> ADD FOREIGN KEY (account_number) REFERENCES loan(loan_number);
+Query OK, 0 rows affected (1.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> describe borrower
+    -> ;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| customer_name | varchar(255) | NO   | MUL | NULL    |       |
+| loan_number   | int(11)      | NO   | MUL | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+2 rows in set (0.23 sec)
+
+mysql> INSERT INTO branch VALUES ('sangvi','pune','car'),('aundh','pune','flat');
+Query OK, 2 rows affected (0.28 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM branch
+    -> ;
++-------------+-------------+---------+
+| branch_name | branch_city | assests |
++-------------+-------------+---------+
+| aundh       | pune        | flat    |
+| sangvi      | pune        | car     |
++-------------+-------------+---------+
+2 rows in set (0.00 sec)
+
+mysql> INSERT INTO customer VALUES ('kishor','sixty','pune'),('martand','mvstreet','manipal');
+Query OK, 2 rows affected (0.11 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM customer ORDER BY customer_city ASC;
++---------------+-----------------+---------------+
+| customer_name | customer_street | customer_city |
++---------------+-----------------+---------------+
+| martand       | mvstreet        | manipal       |
+| kishor        | sixty           | pune          |
++---------------+-----------------+---------------+
+2 rows in set (0.01 sec)
+
+mysql> SELECT * FROM customer WHERE customer_street IS sixty OR seventy;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'sixty OR seventy' at line 1
+mysql> SELECT * FROM customer WHERE customer_street IS (sixty OR sevent)y;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(sixty OR sevent)y' at line 1
+mysql> SELECT * FROM customer WHERE customer_street IS (sixty OR sevent);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(sixty OR sevent)' at line 1
+mysql> SELECT * FROM customer WHERE customer_street (sixty OR sevent);
+ERROR 1305 (42000): FUNCTION x3base.customer_street does not exist
+mysql> SELECT * FROM customer WHERE customer_street='sixty' OR customer_street='seventy';
++---------------+-----------------+---------------+
+| customer_name | customer_street | customer_city |
++---------------+-----------------+---------------+
+| kishor        | sixty           | pune          |
++---------------+-----------------+---------------+
+1 row in set (0.11 sec)
+
+mysql> INSERT INTO customer VALUES (01,'aundh',50000),(02,'sangvi',75000);
+Query OK, 2 rows affected (0.21 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM customer;
++---------------+-----------------+---------------+
+| customer_name | customer_street | customer_city |
++---------------+-----------------+---------------+
+| 1             | aundh           | 50000         |
+| 2             | sangvi          | 75000         |
+| kishor        | sixty           | pune          |
+| martand       | mvstreet        | manipal       |
++---------------+-----------------+---------------+
+4 rows in set (0.00 sec)
+
+mysql> DELETE FROM customer WHERE customer_name=1 OR customer_name=2;
+ERROR 1292 (22007): Truncated incorrect DOUBLE value: 'kishor'
+mysql> DELETE FROM customer WHERE customer_name='kishor';
+Query OK, 1 row affected (0.13 sec)
+
+mysql> SELECT * FROM customer;
++---------------+-----------------+---------------+
+| customer_name | customer_street | customer_city |
++---------------+-----------------+---------------+
+| 1             | aundh           | 50000         |
+| 2             | sangvi          | 75000         |
+| martand       | mvstreet        | manipal       |
++---------------+-----------------+---------------+
+3 rows in set (0.00 sec)
+
+mysql> DELETE * FROM customer
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '* FROM customer' at line 1
+mysql> DELETE FROM customer
+    -> ;
+Query OK, 3 rows affected (0.23 sec)
+
+mysql> INSERT INTO customer VALUES ('kishor','sixty','pune'),('martand','mvstreet','manipal');
+Query OK, 2 rows affected (0.13 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO loan VALUES (01,'aundh',50000),(02,'sangvi',75000);
+Query OK, 2 rows affected (0.15 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO borrower VALUES ('martand',02),('kishor',01);
+Query OK, 2 rows affected (0.16 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM borrower
+    -> ;
++---------------+-------------+
+| customer_name | loan_number |
++---------------+-------------+
+| martand       |           2 |
+| kishor        |           1 |
++---------------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM borrower ORDER BY loan_number ASC;
++---------------+-------------+
+| customer_name | loan_number |
++---------------+-------------+
+| kishor        |           1 |
+| martand       |           2 |
++---------------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> INSERT INTO account VALUES (101,'aundh',5000),(102,'sangvi',7500);
+ERROR 1146 (42S02): Table 'x3base.account' doesn't exist
+mysql> CREATE TABLE account (
+    -> account_number int NOT NULL,
+    -> branch_name varchar(255) NOT NULL,
+    -> balance int NOT NULL,
+    -> PRIMARY KEY (account_number),
+    -> FOREIGN KEY (branch_name) REFERENCES branch(branch_name)
+    -> );
+Query OK, 0 rows affected (0.65 sec)
+
+mysql> INSERT INTO account VALUES (101,'aundh',5000),(102,'sangvi',7500);
+Query OK, 2 rows affected (0.17 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO depositor VALUES ('martand',101),('kishor',102);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`x3base`.`depositor`, CONSTRAINT `depositor_ibfk_2` FOREIGN KEY (`account_number`) REFERENCES `loan` (`loan_number`))
+mysql> ALTER TABLE depositor
+    -> ADD FOREIGN KEY (account_number) REFERENCES account(account_number);
+Query OK, 0 rows affected (1.75 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO depositor VALUES ('martand',101),('kishor',102);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`x3base`.`depositor`, CONSTRAINT `depositor_ibfk_2` FOREIGN KEY (`account_number`) REFERENCES `loan` (`loan_number`))
+mysql> ALTER TABLE depositor
+    -> ADD FOREIGN KEY (account_number) REFERENCES account(account_number);
+Query OK, 0 rows affected (1.31 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> INSERT INTO depositor VALUES ('martand',101),('kishor',102);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`x3base`.`depositor`, CONSTRAINT `depositor_ibfk_2` FOREIGN KEY (`account_number`) REFERENCES `loan` (`loan_number`))
+mysql> describe depositor
+    -> ;
++----------------+--------------+------+-----+---------+-------+
+| Field          | Type         | Null | Key | Default | Extra |
++----------------+--------------+------+-----+---------+-------+
+| customer_name  | varchar(255) | NO   | PRI | NULL    |       |
+| account_number | int(11)      | NO   | PRI | NULL    |       |
++----------------+--------------+------+-----+---------+-------+
+2 rows in set (0.13 sec)
+
+mysql> DROP TABLE depositor
+    -> ;
+Query OK, 0 rows affected (0.65 sec)
+
+mysql> CREATE TABLE depositor (
+    -> customer_name varchar(255) NOT NULL,
+    -> account_number int NOT NULL,
+    -> CONSTRAINT pk_depositor PRIMARY KEY (customer_name,account_number),
+    -> FOREIGN KEY (customer_name) REFERENCES customer(customer_name)
+    -> );
+Query OK, 0 rows affected (0.44 sec)
+
+mysql> ALTER TABLE depositor
+    -> ADD FOREIGN KEY (account_number) REFERENCES account(account_number);
+Query OK, 0 rows affected (1.17 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO depositor VALUES ('martand',101),('kishor',102);
+Query OK, 2 rows affected (0.20 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM depositor
+    -> ;
++---------------+----------------+
+| customer_name | account_number |
++---------------+----------------+
+| martand       |            101 |
+| kishor        |            102 |
++---------------+----------------+
+2 rows in set (0.00 sec)
+
+mysql>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
