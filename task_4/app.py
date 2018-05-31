@@ -11,20 +11,23 @@ app.config["SQLALCHEMY_DATABASE_URI"] = database_file
 db= SQLAlchemy(app)
 
 class Books (db.Model):
-    title=db.Column(db.String(80), primary_key=False)
-    id=db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title=db.Column(db.String(80), primary_key=True)
 
-    def __init__(self, title, id):
+
+    def __init__(self, title):
         self.title=title
-        self.id=id
+        db.create_all();
+
+
+
 
 @app.route ("/")
 def home ():
     return "Add, Display, Edit, Delete books"
 
 @app.route ("/add", methods= ["GET", "POST"])
-def create ():
-    book=Book(request.json["title"])
+def add ():
+    book = Books(request.json["title"])
     db.session.add (book)
     db.session.commit ()
     return "Added "+str (book.title)
@@ -32,7 +35,7 @@ def create ():
 @app.route("/display", methods=['GET', 'POST'])
 def read ():
     allbooks=[]
-    books=Books.query.order_by('Books.id').all ()
+    books=Books.query.order_by('Books.title').all ()
     for i in books:
         allbooks.append(i.title)
     return jsonify (allbooks)
