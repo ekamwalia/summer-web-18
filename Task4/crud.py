@@ -33,7 +33,7 @@ def read ():
         allmovies.append(m.title)
     return jsonify (allmovies)
 
-@app.route ("/update", methods=["POST"])
+@app.route ("/update", methods=["GET","POST"])
 def update ():
     updateinfo=request.json
     newtitle=updateinfo["newtitle"]
