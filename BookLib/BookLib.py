@@ -45,7 +45,7 @@ def all():
 	abooks=books.query.all()
 
 	for i in abooks:
-		all_books.append([i.book_name, str(i.rating), i.availability])
+		all_books.append({"book_name":i.book_name,"rating":str(i.rating),"availability":i.availability})
 	
 	return jsonify(all_books)
 
