@@ -26,6 +26,7 @@ app.post('/create', (req, res) => {
 		if (err) {
 			console.log("Failed to add book: " + err);
 			res.sendStatus(500);
+			conn.end();
 			return;
 		}
 		res.send("Created book successfully.");
@@ -44,6 +45,7 @@ app.get("/read/:id", (req, res) => {
 		if (err) {
 			console.log("Failed to get book: " + err);
 			res.sendStatus(404);
+			conn.end();
 			return;
 		}
 
@@ -64,6 +66,7 @@ app.post('/update/:id', (req,res) => {
 		if (err) {
 			console.log("Failed to update book: " + err);
 			res.sendStatus(500);
+			conn.end();
 			return;
 		}
 		res.send("Updated book successfully.");
@@ -81,6 +84,7 @@ app.delete('/delete/:id', (req, res) => {
 		if (err) {
 			console.log("Failed to delete book: " + err);
 			res.sendStatus(500);
+			conn.end();
 			return;
 		}
 		res.send("Deleted book successfully");
