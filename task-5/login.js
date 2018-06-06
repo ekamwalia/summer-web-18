@@ -36,9 +36,18 @@ function getConnection() {
 }
 
 app.post('/register', (req, res) => {
-	const conn = getConnection();
 	const username = req.body.username;
 	const password = req.body.password;
+
+	if (!username) {
+		res.send("Username must not be empty");
+		return;
+	} else if (!password) {
+		res.send("Password must not be empty");
+		return;
+	}
+
+	const conn = getConnection();
 
 	const query = "INSERT INTO users(user_name, password_hash) VALUES(?, ?)";
 	bcrypt.hash(password, 10, (err, hash) => {
@@ -62,9 +71,18 @@ app.post('/register', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-	const conn = getConnection();
 	const username = req.body.username;
 	const password = req.body.password;
+
+	if (!username) {
+		res.send("Username must not be empty");
+		return;
+	} else if (!password) {
+		res.send("Password must not be empty");
+		return;
+	}
+
+	const conn = getConnection();
 
 	const getHashQuery = "SELECT password_hash FROM users WHERE user_name = ? LIMIT 1";
 	conn.query(getHashQuery, [username], (err, rows, fields) => {
