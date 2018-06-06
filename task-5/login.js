@@ -49,25 +49,40 @@ app.post('/register', (req, res) => {
 
 	const conn = getConnection();
 
-	const query = "INSERT INTO users(user_name, password_hash) VALUES(?, ?)";
-	bcrypt.hash(password, 10, (err, hash) => {
+	const check = "SELECT * FROM users WHERE user_name = ? LIMIT 1";
+	conn.query(check, [username], (err, rows, fields) => {
 		if (err) {
-			console.log("Failed to hash password: " + err);
-			res.sendStatus(500);
+			console.log("Failed to query database: " + err);
+			res.sendStatus(200);
 			conn.end();
 			return;
+		} else if (rows.length) {
+			res.send("User already exists");
+			conn.end();
+			return;
+		} else {
+			const query = "INSERT INTO users(user_name, password_hash) VALUES(?, ?)";
+			bcrypt.hash(password, 10, (err, hash) => {
+				if (err) {
+					console.log("Failed to hash password: " + err);
+					res.sendStatus(500);
+					conn.end();
+					return;
+				}
+				conn.query(query, [username, hash], (err, rows, fields) => {
+					if (err) {
+						console.log("Failed to add user: " + err);
+						res.sendStatus(500);
+						conn.end();
+						return;
+					}
+					res.send("Registered user successfully");
+					conn.end();
+				});
+			});
 		}
-		conn.query(query, [username, hash], (err, rows, fields) => {
-			if (err) {
-				console.log("Failed to add user: " + err);
-				res.sendStatus(500);
-				conn.end();
-				return;
-			}
-			res.send("Registered user successfully.");
-		});
-		conn.end();
 	});
+
 });
 
 app.post('/login', (req, res) => {
