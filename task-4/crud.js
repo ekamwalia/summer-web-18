@@ -54,7 +54,7 @@ app.get("/read/:id", (req, res) => {
 	conn.end();
 });
 
-app.post('/update/:id', (req,res) => {
+app.put('/update/:id', (req,res) => {
 	const conn = getConnection();
 
 	const bookId = req.params.id;
