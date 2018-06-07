@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from flask_marshmallow import Marshmallow
 import os
 
 project_dir = os.path.abspath(os.path.dirname(__file__))
@@ -10,7 +9,6 @@ app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = db_file
 
 db = SQLAlchemy(app)
-ma = Marshmallow(app)
 
 class Members(db.Model):
 	reg = db.Column(db.Integer, primary_key = True)
@@ -23,48 +21,47 @@ class Members(db.Model):
 		self.name = name
 		self.contact = contact
 
-class MemberSchema(ma.Schema):
-	class Meta:
-		fields = ('reg', 'name', 'contact')
-
-member_schema = MemberSchema()
-members_schema = MemberSchema(many = True)
-
-
 @app.route('/add', methods = ["POST"])
 def add():
-	new_member = Members(request.json["reg"], request.json["name"], request.json["contact"])
+	data = request.get_json()
+	if 'reg' not in data:
+		abort(400)
+	new_member = Members(data.get('reg'), data.get('name'), data.get('contact'))
 	db.session.add(new_member)
 	db.session.commit() 
-	return member_schema.jsonify(new_member)
+	return "Added " + str(new_member.reg)
 
 @app.route('/get', methods = ["GET"])
 def get():
-	all_members = Members.query.all()
-	result = members_schema.dump(all_members)
-	return jsonify(result.data)
+	members = []
+	for m in Members.query.all():
+		members.append({"reg" : m.reg, "name" : m.name, "contact" : m.contact})
+	return jsonify(members)
 
 @app.route('/update/<reg>', methods = ["PUT"])
 def update(reg):
 	member = Members.query.get(reg)
-	reg = request.json["reg"]
-	name = request.json["name"]
-	contact = request.json["contact"]
+	if member is None:
+		abort(400)
 
-	member.reg = reg
-	member.name = name
-	member.contact = contact
+	data = request.get_json()
+	member.reg = data.get('reg')
+	member.name = data.get('name')
+	member.contact = data.get('contact')
 
 	db.session.commit()
-	return member_schema.jsonify(member)
+	updated_member = {"reg" : member.reg, "name" : member.name, "contact" : member.contact}
+	return jsonify(updated_member)
 
 @app.route('/delete/<reg>', methods = ["DELETE"])
 def delete(reg):
 	member = Members.query.get(reg)
+	if member is None:
+		abort(400)
+		
 	db.session.delete(member)
 	db.session.commit()
-	return member_schema.jsonify(member)
-
+	return "Deleted " + str(member.reg)
 
 if __name__ == "__main__":
 	app.run(debug = True)
