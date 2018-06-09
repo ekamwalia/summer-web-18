@@ -1,0 +1,5 @@
+/env/
+/flask_session/
+/__pycache__/
+cruddb.db
+login2.py
