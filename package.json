@@ -17,8 +17,11 @@
   },
   "homepage": "https://github.com/kelsier27/summer-web-18#readme",
   "dependencies": {
+    "bcrypt": "^2.0.1",
     "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.3",
     "express": "^4.16.3",
+    "express-session": "^1.15.6",
     "mysql": "^2.15.0",
     "nodemon": "^1.17.4"
   }
