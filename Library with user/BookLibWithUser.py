@@ -1,8 +1,9 @@
 import os
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, session, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-import numpy as np
+import random
 import json
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app=Flask(__name__)
 
@@ -46,20 +47,23 @@ class Users(db.Model):
 	def __init__(self,userID,uname,password,bookIssued):
 		self.userID=userID
 		self.uname=uname
-		self.password=password
+		self.password=generate_password_hash(password)
 		self.bookIssued=bookIssued
 
 @app.route("/login", methods=["get","Post"])
 def login():
 	global log, currentUser
+	if log:
+		return "Already Logged in"
 	Id=request.json["userid"]
 	Pass=request.json['password']
 	user=Users.query.filter_by(userID=Id).first()
 	if user is None:
 		return "Invalid UserID"
-	if user.password==Pass:
-		log=True
+	if check_password_hash(user.password, Pass):
 		currentUser=Id
+		log=True
+		session["user"]=Id
 		return "Login Successfull"
 	else:
 		return "Invalid Password"
@@ -67,7 +71,7 @@ def login():
 @app.route("/")
 
 def home():
-	if log:
+	if "user" in session:
 		return "Welcome To e-Library\n\tChoose one of the following:\n\t\tall\n\t\tadd\n\t\tissue\n\t\treturn\n\t\tdelete"
 	else:
 		return "Please Login\nTo login go to /login"
@@ -87,21 +91,22 @@ def all():
 @app.route("/add", methods=["Get","Post"])
 
 def add():
-	
-	if currentUser=="admin":
+	if "user" in session:
+		if currentUser=="admin":
 
-		book_detail=books(request.json['book_name'], request.json['rating'], request.json['availability'])
-		db.session.add(book_detail)
-		db.session.commit()
+			book_detail=books(request.json['book_name'], request.json['rating'], request.json['availability'])
+			db.session.add(book_detail)
+			db.session.commit()
 
-		return "Book added-"+str(book_detail.book_name)
-	else:
-		return "Sorry! Only admin can add a book"
+			return "Book added-"+str(book_detail.book_name)
+		else:
+			return "Sorry! Only admin can add a book"
+	return "Not logged in, Please log in first"+redirect(url_for('login'))
 
 @app.route("/issue", methods=["Get","Post"])
 
 def issue():
-	if log:
+	if "user" in session:
 		user=Users.query.filter_by(userID=currentUser).first()
 		if not user.bookIssued:
 			n=request.json['name']
@@ -123,12 +128,12 @@ def issue():
 		else:
 			return "You can only issue One book at a time"
 	else:
-		return "Please Login first\nTo login go to /login"
+		return "Please Login first"+redirect(url_for("login"))
 
 @app.route('/return', methods=["Get","Post"])
 
 def ReturnBook():
-	if log:
+	if "user" in session:
 		n=request.json['name']
 		user=Users.query.filter_by(userID=currentUser).first()
 		if user.bookIssued==n:
@@ -167,7 +172,7 @@ def delete():
 	else:
 		return "Sorry! Only admin can delete a book"
 
-@app.route('/logup',methods=['Get','Post'])
+@app.route('/signup',methods=['Get','Post'])
 @app.route('/addUser',methods=['Get','Post'])
 
 def new_user():
@@ -179,7 +184,9 @@ def new_user():
 @app.route('/logout', methods=["get","Post"])
 def logout():
 	log=False
+	session.pop("user", None)
 	return "Session Logged Out successfully\nTo login again go to /login"
 
 if __name__ == '__main__':
+	app.secret_key=os.urandom(15)
 	app.run(debug=True)
