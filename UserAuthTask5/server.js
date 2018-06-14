@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const session = require('express-session');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const mysql = require('mysql');
@@ -17,15 +18,8 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(session({secret:'secret'}));
 
-app.listen(3000,(err)=>
-{
-	if(err)
-		console.log(err);
-	else
-		console.log('Listening on 3000!');
-});
 
-app.post('/register',(res,req)=>{
+app.post('/register',(req,res)=>{
 	const uidQuery ="SELECT * FROM users WHERE userid=?";
 	bcrypt.hash(req.body.password,10,(err,hash)=>{
 		if(err)
@@ -36,7 +30,7 @@ app.post('/register',(res,req)=>{
 		if(rows.length)
 			res.json({'status':'failed.userid already exists.'});
 		else
-			connection.query("INSERT INTO users VALUES (?,?)",[req.body.userid,hash],(error.results)=>{
+			connection.query("INSERT INTO users VALUES (?,?)",[req.body.userid,hash],(error,results)=>{
 				if(err)
 					console.log(error);
 				else
@@ -47,27 +41,27 @@ app.post('/register',(res,req)=>{
 	});
 });
 
-app.post('/login',(res,req)=>{
+app.post('/login',(req,res)=>{
 	const passQuery ="SELECT password FROM users WHERE userid=? LIMIT 1";
 	connection.query(passQuery,[req.body.userid],(err,rows,fields)=>{
 		if(!rows.length)
 			res.json({'status':'User not found'});
 		else
-			bcrypt.compare(req.body.password,rows[0].password,(err,res)=>{
-				if(res)
+			bcrypt.compare(req.body.password,rows[0].password,(error,result)=>{
+				if(result)
 				{
 					req.session.userid = req.body.userid;
 					res.json({"status":'logged in'});
 				}
 				else
-					res.json('status':'wrong password');
+					res.json({'status':'wrong password'});
 			});
 	});
 });
 
-app.get('/home',(res,req)=>
+app.get('/home',(req,res)=>
 {
-	if(!req.session)
+	if(!req.session.userid)
 		res.json({'status':'Log in required'});
 	else
 	{
@@ -76,11 +70,19 @@ app.get('/home',(res,req)=>
 	}
 });
 
-app.post('/logout',(res,req)=>{
+app.post('/logout',(req,res)=>{
 	req.session.destroy((err)=>{
 		if(err)
 			console.log(err);
 		else
 			res.json({'status':'logged out successfully'});
 	});
+});
+
+app.listen(3000,(err)=>
+{
+	if(err)
+		console.log(err);
+	else
+		console.log('Listening on 3000!');
 });
