@@ -1,0 +1,4 @@
+/venv5/
+/__pycache__/
+/UserData.db/
+/flask_session
