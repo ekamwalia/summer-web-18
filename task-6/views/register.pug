@@ -1,0 +1,9 @@
+extends includes/layout.pug
+
+block content
+	form.content-form(action='' method='POST')
+			input.content-form-input(type='text' name='username' placeholder='Username')
+			|
+			input.content-form-input(type='password' name='password' placeholder='Password')
+			|
+			input.content-form-submit.btn(type='submit' name='submit' value='Register')

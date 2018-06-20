@@ -1,0 +1,10 @@
+extends includes/layout.pug
+
+block content
+	- var noPath = path == ''
+	ul: each item in items
+		li
+			if noPath
+				a(href=`${repo}/${item}`) #{item}
+			else
+				a(href=`${path}/${item}`) #{item}

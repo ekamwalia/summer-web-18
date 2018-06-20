@@ -1,0 +1,17 @@
+extends includes/layout.pug
+
+block navContent
+	form(action='' method='POST')
+		.nav-item
+			button(id='star' type='submit' formaction='/star' value='Star' onclick=`star({user: '${user}'})`) Star
+		.nav-item
+			button(type='submit' formaction='/logout') Logout
+
+block content
+	h3 #{user}'s Repos
+	ul
+		each repo in userRepos
+			li
+				a(href=`${user}/${repo}`) #{repo}
+	script
+		include ../public/star.js

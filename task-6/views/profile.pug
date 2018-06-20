@@ -1,0 +1,20 @@
+extends includes/layout.pug
+
+block navContent
+	.nav-item: form(action='' method='POST')
+		input#search(type='text' name='search' placeholder='Search..')
+		button(type='submit' formaction='/search') Search
+	.nav-item: h5 #{username}
+	.nav-item: div
+		button(type='submit' formaction='/logout') Logout
+
+block content
+	.profile
+		h3 Starred Users
+		.list
+			if starredUsers
+				ul: each user in starredUsers
+					li= user
+			else
+				p You haven't starred any users yet
+
