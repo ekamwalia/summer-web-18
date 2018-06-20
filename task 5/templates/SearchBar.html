@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>GitHub finder- Search</title>
+</head>
+<h2>Welcome {{name}}</h2>
+<body>
+<form method="POST">
+	Enter Git Username :<input type="text" name="uid">
+	<button type="submit">Search</button>
+</form>
+</body>
+<a href="{{url_for('starred')}}"><button>My Starred Names</button></a>
+<a href="{{url_for('logout')}}"><button>Logout!</button></a>
+</html>

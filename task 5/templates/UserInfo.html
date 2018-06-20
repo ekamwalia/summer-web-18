@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Select An option</title>
+</head>
+<a href="{{url_for('search')}}"><button><- Go Back</button></a>
+<h1>User Information</h1>
+<body>
+	<h3>{{detail["name"]}}</h3>
+	{% if star %}
+	<a href="unstar"><button>unstar</button></a>
+	{% else %}
+	<a href="star"><button>star</button></a>
+	{% endif %}
+
+	<br>ID: {{detail.id}}
+	<br>Email: {{detail.email}}
+	<br>Followers: {{detail.followers}}		Followers: {{detail.followers}}
+	<br>Hireabe: {{detail.hireable}}
+	<br>Company: {{detail.company}}
+	<br>Location: {{detail.location}}
+	<br>Total no. of Public Repositories: {{detail.public_repos}}<br><h4><a href="{{url_for('repos')}}">Repositories</a></h4>
+
+</body>
+<a href="{{url_for('logout')}}"><button>Logout!</button></a>
+</html>
