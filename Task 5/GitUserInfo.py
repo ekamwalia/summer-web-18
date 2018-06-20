@@ -32,7 +32,7 @@ class Star(db.Model):
 		self.ID=ID
 		self.userid=userid
 		self.stared=stared
-
+@app.route("/",methods=["Get","Post"])
 @app.route("/login", methods=["Get","Post"])
 def login():
 	if request.method=="POST":
@@ -46,7 +46,10 @@ def login():
 		else:
 			return "Check Username or Password"
 	return render_template("login.html")
-
+	"""
+	username=raghav
+	password=1234
+	"""
 @app.route("/addAccount", methods=["Post","Get"])
 def addAccount():
 	if request.method=="POST":
