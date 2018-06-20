@@ -1,0 +1,20 @@
+<!DOCTYPE>
+<html>
+<head>
+  <title>GIT USERS</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="navbar">
+  {% include 'includes/_navbar.html' %}
+  </div>
+  <br>
+  <br>
+  {% include 'includes/messages.html' %}
+  <div class="container">
+    {% block body %}{% endblock %}
+  </div>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+</body>
+</html>

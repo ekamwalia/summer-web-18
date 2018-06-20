@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block body %}
+<h3>{{detail["name"]}}</h3>
+	{% if star %}
+	<a href="unstar"><button>unstar</button></a>
+	{% else %}
+	<a href="star"><button class="btn btn-primary">star</button></a>
+	{% endif %}
+  <br>
+  <table class="table table-striped">
+      <tr>
+        <td>ID</td>
+        <td>Email</td>
+        <td>Followers</td>
+        <td>Hireable</td>
+        <td>Company</td>
+        <td>Location</td>
+        <td>Number of Public Repositories</td>
+      </tr>
+      <tr>
+        <td>{{detail.id}}</td>
+        <td>{{detail.email}}</td>
+        <td>{{detail.followers}}</td>
+        <td>{{detail.hireable}}</td>
+        <td>{{detail.company}}</td>
+        <td>{{detail.location}}</td>
+        <td>{{detail.public_repos}}</td>
+  </table>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block body %}
+<h1>SEARCH USER</h1>
+{% from "includes/formhelpers.html" import render_field %}
+<form method="POST" action="">
+    <div class="form-group">
+      Enter Git name: <input type="text" name="Gitname" class="form-group">
+    </div>
+    <p><input type="submit" class="btn btn-primary" value="Submit"></p>
+</form>
+
+{% endblock %}
