@@ -1,6 +1,13 @@
 {% extends "layout.html" %}
 {% block body %}
+{% from "includes/formhelpers.html" import render_field %}
+<table class="table table-striped">
+		<tr>
+			<td> GIT NAME </td>
+		</tr>
 {% for star in stars %}
-	<br>{{star}}
+<tr>
+	<td>{{star}}</td>
+</tr>
 	{% endfor %}
 {% endblock %}

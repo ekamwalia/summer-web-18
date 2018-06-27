@@ -1,18 +1,19 @@
 {% extends "layout.html" %}
 {% block body %}
+<div class="container col-md-4 col-sm-4">
 <h1>REGISTER</h1>
 {% from "includes/formhelpers.html" import render_field %}
 <form method="POST" action="">
     <div class="form-group">
-      Enter Username: <input type="text" name="Username" class="form-group">
+      <input placeholder="Username" type="text" name="Username" class="form-control">
     </div>
     <div class="form-group">
-      Enter Password: <input type="password" name="Password" class="form-group">
+      <input placeholder="Password" type="password" name="Password" class="form-control">
     </div>
     <div class="form-group">
-      Confirm Password: <input type="password" name="Confpass" class="form-group">
+      <input placeholder="Confirm Password" type="password" name="Confpass" class="form-control">
     </div>
     <p><input type="submit" class="btn btn-primary" value="Submit"></p>
 </form>
-
+</div>
 {% endblock %}

@@ -27,8 +27,8 @@ class Users(db.Model):
 	def __init__(self, Username, Password):
 		self.Username=Username
 		self.Password=generate_password_hash(Password)
+		db.create_all()
 
-db.create_all()
 
 class Star(db.Model):
 	ID=db.Column(db.Integer(), primary_key=True)
@@ -39,8 +39,7 @@ class Star(db.Model):
 		self.ID=ID
 		self.Username=Username
 		self.starred=starred
-
-db.create_all()
+		db.create_all()
 
 
 @app.route('/')
@@ -82,25 +81,28 @@ def is_logged_in(f):
             flash('Unauthorized, Please login', 'danger')
             return redirect(url_for('login'))
     return wrap
+
 @app.route('/dashboard', methods=['POST','GET'])
 @is_logged_in
 def dashboard():
-        if request.method=="POST":
-            session.pop('gitName',None)
-            gitname=request.form["Gitname"]
-            strd=Star.query.filter_by(Username=session["user"]).all()
-            try:
-                url='https://api.github.com/users/'+gitname+''
-            except:
-                flash('INVALID GIT NAME','danger')
-            button=False
-            for s in strd:
-                if s.starred==gitname:
-                    button=True
-            usern=requests.get(url).json()
-            session['gitName']=gitname
-            return render_template("UserInfo.html", detail=usern)
-        return render_template('search.html')
+	if request.method=="POST":
+		session.pop('gitName',None)
+		gitname=request.form["Gitname"]
+		strd=Star.query.filter_by(Username=session["user"]).all()
+		try:
+			url='https://api.github.com/users/'+gitname+''
+		except:
+			flash('INVALID GIT NAME','danger')
+		button=False
+		for s in strd:
+			if s.starred==gitname:
+				button=True
+		usern=requests.get(url).json()
+		session['usern']=usern
+		session['gitName']=gitname
+		session['but']=button
+		return render_template("UserInfo.html",detail=usern,status=button)
+	return render_template("search.html")
 
 @app.route('/logout')
 @is_logged_in
@@ -109,47 +111,49 @@ def logout():
     flash('You are now logged out', 'success')
     return redirect(url_for('login'))
 
-@app.route("/star")
+@app.route("/star", methods=['GET','POST'])
 @is_logged_in
 def star():
-    gitname=session["gitName"]
-    try:
-        sadd=Star(random.randint(1,100000),session["user"], gitname)
-        db.session.add(sadd)
-        db.session.commit()
+	gitname=session["gitName"]
+	try:
+		sadd=Star(random.randint(1,100000),session["user"], gitname)
+		db.session.add(sadd)
+		db.session.commit()
         #if random no. coinsides
-    except:
-        sadd=Star(random.randint(1,100000),session["user"], gitname)
-        db.session.add(sadd)
-        db.session.commit()
+	except:
+		sadd=Star(random.randint(1,100000),session["user"], gitname)
+		db.session.add(sadd)
+		db.session.commit()
+	flash('USER STARRED','success')
+	return render_template("starred.html")
 
-    flash('USER STARRED','success')
 
-
-@app.route("/unstar")
+@app.route("/unstar", methods=['GET','POST'])
 @is_logged_in
 def unstar():
-    gitname=session["gitName"]
-    try:
-        adel=Star.query.filter_by(userid=session["user"], stared=gitname).first()
-        db.session.delete(adel)
-        db.session.commit()
+	gitname=session["gitName"]
+	try:
+		adel=Star.query.filter_by(Username=session["user"], starred=gitname).first()
+		db.session.delete(adel)
+		db.session.commit()
         #if random no. coinsides
-    except:
-        flash('User is not starred','danger')
+	except:
+		flash('User is not starred','danger')
 
-    flash('User has been starred','success')
+	flash('User has been unstarred','success')
+	return render_template("starred.html")
 
-@app.route("/starred")
+@app.route("/fav", methods=['GET','POST'])
+@app.route("/starred", methods=['GET','POST'])
 @is_logged_in
 def starred():
-    star=Star.query.filter_by(userid=session["user"]).all()
-    std=[]
-    for s in star:
-        std.append(s.stared)
-    if not std:
-        flash('NO STARRED USERNAMES','danger')
-    return render_template("starred.html", stars=std)
+	star=Star.query.filter_by(Username=session["user"]).all()
+	std=[]
+	for s in star:
+		std.append(s.starred)
+	if not std:
+		flash('NO STARRED USERNAMES','danger')
+	return render_template("starred.html", stars=std)
 
 
 
@@ -157,5 +161,6 @@ def starred():
 
 
 if __name__=="__main__":
-    app.secret_key = os.urandom(12)
-    app.run(debug=True)
+	app.secret_key = os.urandom(12)
+	app.run(debug=True)
+	app.config['TEMPLATES_AUTO_RELOAD'] = True

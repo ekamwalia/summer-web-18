@@ -1,15 +1,17 @@
 {% extends "layout.html" %}
 {% block body %}
+<div class="container col-sm-4 col-md-4">
 <h1>LOGIN</h1>
 {% from "includes/formhelpers.html" import render_field %}
+
 <form method="POST" action="">
     <div class="form-group">
-      Enter Username: <input type="text" name="Username" class="form-group">
+      <input placeholder="USERNAME" type="text" name="Username" class="form-control">
     </div>
     <div class="form-group">
-      Enter Password: <input type="password" name="Password" class="form-group">
+      <input placeholder="PASSWORD" type="password" name="Password" class="form-control">
     </div>
     <p><input type="submit" class="btn btn-primary" value="Submit"></p>
 </form>
-
+</div>
 {% endblock %}

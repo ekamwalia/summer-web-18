@@ -1,11 +1,7 @@
 {% extends "layout.html" %}
 {% block body %}
 <h3>{{detail["name"]}}</h3>
-	{% if star %}
-	<a href="unstar"><button>unstar</button></a>
-	{% else %}
-	<a href="star"><button class="btn btn-primary">star</button></a>
-	{% endif %}
+
   <br>
   <table class="table table-striped">
       <tr>
@@ -16,6 +12,7 @@
         <td>Company</td>
         <td>Location</td>
         <td>Number of Public Repositories</td>
+				<td>Star</td>
       </tr>
       <tr>
         <td>{{detail.id}}</td>
@@ -25,5 +22,12 @@
         <td>{{detail.company}}</td>
         <td>{{detail.location}}</td>
         <td>{{detail.public_repos}}</td>
+				<td>
+					{% if status %}
+					<a href="unstar"><button class="btn btn-danger">unstar</button></a>
+					{% else %}
+					<a href="star"><button class="btn btn-primary">star</button></a>
+					{% endif %}
+				</td>
   </table>
 {% endblock %}
