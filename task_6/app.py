@@ -125,7 +125,7 @@ def star():
 		db.session.add(sadd)
 		db.session.commit()
 	flash('USER STARRED','success')
-	return render_template("starred.html")
+	return redirect(url_for('starred'))
 
 
 @app.route("/unstar", methods=['GET','POST'])
@@ -141,7 +141,7 @@ def unstar():
 		flash('User is not starred','danger')
 
 	flash('User has been unstarred','success')
-	return render_template("starred.html")
+	return redirect(url_for('starred'))
 
 @app.route("/fav", methods=['GET','POST'])
 @app.route("/starred", methods=['GET','POST'])
