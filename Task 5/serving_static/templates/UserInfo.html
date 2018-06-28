@@ -1,0 +1,71 @@
+{% extends "ALbase.html" %}
+
+{% block content %}
+<style type="text/css">
+	.divi{
+		position: relative;
+		display: block;
+		background-color: #0b98de;
+		opacity: 50%;
+		padding-right: 100px;
+		text-align: left;
+		margin-right: 100px;
+		margin-left: 100px;
+		color: white;
+		font-size: 30px;
+		padding-bottom: 50px;
+		z-index: 1;
+	}
+	#h1id{
+		position: relative;
+		font-family: 'Hind', sans-serif;
+		color: white;
+		margin-left: 100px;
+		margin-top: 50px;
+		font-size: 50px;
+		margin-bottom: -100px;
+		float: left;
+		top:-80px;
+		right:-50px;
+		z-index: 2;
+		letter-spacing: -1px;
+	}
+	#but2{
+		position: relative;
+		left: 50px;
+		background-color: white;
+		border: none;
+		font-size: 20px;
+		padding: 10px 24px;
+		text-align: center;
+		color:  #17b0cf;
+		transition-duration: 0.3s;
+		width: 300px;
+		cursor: pointer;
+		margin-top: 10px;
+	}
+	#but2:hover{
+		background-color:  #17b0cf;
+		color: white;
+	}
+	#fon{
+		position: relative;
+		left:40px;
+	}
+
+</style>
+<div>
+	<h3 id="h1id">{{detail.name}}</h3>
+</div>
+<div class="divi">
+	<br><img src="https://avatars3.githubusercontent.com/u/{{detail.id}}?v=4" alt="Avatar" style=" width: 200px;height: 200px; float: right;margin-top: -67px; border-color: white;">
+	<br><font style="font-size:25px; position: relative; top:-50px;right: -60px">Followers: {{detail.followers}} &nbsp &nbsp Followers: {{detail.followers}}</font>
+	<font id="fon"><br>ID: {{detail.id}}
+	<br>Email: {{detail.email}}
+	<br>Hireabe: {{detail.hireable}}
+	<br>Company: {{detail.company}}
+	<br>Location: {{detail.location}}
+	<br>Total Repositories: {{detail.public_repos}}<br></font>
+	<a href="{{url_for('repos')}}"><button id="but2">Repositories</button></a></h4>
+<div>
+{% endblock %}

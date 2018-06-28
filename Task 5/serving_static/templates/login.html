@@ -1,0 +1,30 @@
+{% extends "OLbase.html" %}
+
+{% block content %}
+
+
+<div class="div1">
+<form method="POST">
+	<label for="username">Username</label><br><input type="text" name="username" id="username" placeholder="Enter Username">
+	{% if inuser %}
+		<br>
+		<font style="color:red; text-align: left;">Incorrect Username</font>
+		{% endif %}
+	<br>
+	<label for="password">Password</label><br><input type="password" name="password" id="password" placeholder="Enter Password">
+	{% if inpass %}
+		<br>
+		<font style="color:red; text-align: left;">Incorrect Password</font>
+		{% endif %}
+	<br>
+	<button type="submit" id="but"><span>Login</span></button> 
+</form>
+</div>
+
+<div class="welc">
+	<font id="wc1">Welcome</font><br>
+	<font id="wc2">to Git Finder</font>
+</div>
+
+
+{% endblock %}

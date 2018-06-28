@@ -1,0 +1,116 @@
+<html>
+<head>
+	{% if title %}
+	<title>{{title}}-Git Finder</title>
+	{% else%}
+	<title>Git Finder</title>
+	{% endif %}
+	
+<style type="text/css">
+	body{
+		text-align: center;
+		background-image: url("../static/images/github.jpg");
+		background-size: cover;
+	}
+
+	.navbar{
+		
+		
+		background-color: #0b98de;
+		overflow: hidden;
+		position: sticky;
+		
+
+	}
+	.navbar a {
+		float: left;
+		display: block;
+		padding-top: 20px;
+    	padding-right: 10px;
+    	padding-bottom: 15px;
+    	padding-left: 10px;
+    	text-decoration: none;
+    	color: white;
+    	font-family: sans-serif;
+    	font-size: 20px;
+    	transition: all 0.3s ease;
+
+	}
+	.navbar a:hover{
+		background-color: #17b0cf;
+
+	}
+	.navbar a:active{
+		background-color: #17b0cf;
+	}
+	#hom{
+		font-family: 'Hind', sans-serif;
+ 		font-size: 30px;
+    	letter-spacing: -2px;
+  		padding-left: 20px;
+ 		padding-right: 40px;
+  		margin-right: 10px;
+  		margin-top: -10px;
+	}
+
+input[type=text] {
+    width: 25%;
+    float: left;
+    box-sizing: border-box;
+    border: 2px solid #0b98de;
+    font-size: 20px;
+    color: white;
+    background-color: #0b98de;
+    background-image: url(../static/images/whitesearchicon.png);
+    background-position: 10px 18px;
+    background-size: 25px 25px;
+    background-repeat: no-repeat;
+    padding-top: 17px;
+    padding-bottom: 17px;
+    padding-left: 40px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+}
+
+input[type=text]:focus {
+    width: 50%;
+    background-color: #17b0cf;
+}
+
+#starimg{
+	width:35px;
+	height:35px;
+	margin-top: -8px;
+	margin-bottom: -2px;
+
+}
+
+
+</style>
+</head>
+<div class="navbar">
+
+	<a href="{{url_for('search')}}" id="hom" >GitFinder</a>
+	{% if found and star %}
+	<a href="unstar"><img src="../static/images/goldStar.png" id="starimg"></a>
+	{% elif found and not star %}
+	<a href="star"><img src="../static/images/whiteStar.png" id="starimg"></a>
+	{% else %}
+	<a href="{{url_for('starred')}}" >Starred</a>
+	{% endif %}
+	{% if page %}
+	<a href="{{url_for('search')}}">New Search</a>
+	{% else %}
+	<form method="POST">
+	<input type="text" id="search"  name="search" placeholder="Search..">
+	<input type="submit" 
+       style="position: absolute; left: -9999px; width: 1px; height: 1px;"
+       tabindex="-1"></form>
+    {% endif %}
+	<a href="{{url_for('logout')}}" style="float: right; padding-left: 20px;padding-right: 40px;margin-right: 10px;margin-top: -17px;">Logout</a>
+</div>
+<body>
+	<br><br><br><br>
+	{% block content %} {% endblock %}
+</body>
+</html>

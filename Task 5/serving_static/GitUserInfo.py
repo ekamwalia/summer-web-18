@@ -35,23 +35,25 @@ class Star(db.Model):
 @app.route("/",methods=["Get","Post"])
 @app.route("/login", methods=["Get","Post"])
 def login():
+	title="login"
 	if request.method=="POST":
 		session.pop("user", None)
 		cu=Users.query.filter_by(userid=request.form["username"]).first()
 		if cu is None:
-			return "Invalid Username"
+			return render_template("login.html", title=title, inuser=True)
 		if check_password_hash(cu.password, request.form["password"]):
 			session["user"]=request.form["username"]
 			return redirect(url_for("search"))
 		else:
-			return "Check Username or Password"
-	return render_template("login.html")
+			return render_template("login.html", title=title, inpass=True)
+	return render_template("login.html", title=title)
 	"""
 	username=raghav
 	password=1234
 	"""
 @app.route("/addAccount", methods=["Post","Get"])
 def addAccount():
+	title="Add Account"
 	if request.method=="POST":
 		if request.form["password"]==request.form["Confpass"]:
 			try:
@@ -60,18 +62,22 @@ def addAccount():
 				db.session.commit()
 				return "User added successfully"
 			except:
-				return "Username already registered, try again"
+				return render_template("AddUser.html", title=title, exist=True)
+		else:
+			return render_template("AddUser.html", title=title, unmatch=True)
 
-	return render_template("AddUser.html")
+	return render_template("AddUser.html", title=title)
 
 @app.route("/search", methods=["get","POST"])
 def search():
+	title="search"
 	if "user" in session:
+		session.pop("usern", None)
 		if request.method=="POST":
 			try:
 				session.pop('gitName',None)
 
-				gitname=request.form["uid"]
+				gitname=request.form["search"]
 				strd=Star.query.filter_by(userid=session["user"]).all()
 				try:
 					url='https://api.github.com/users/'+gitname+''
@@ -84,10 +90,11 @@ def search():
 
 				usern=requests.get(url).json()
 				session['gitName']=gitname
+				session["usern"]=usern
 
-				return render_template("UserInfo.html", detail=usern, star=button)
+				return render_template("UserInfo.html",title=title, detail=usern, star=button, found=True)
 			except:
-				return "Invalid Username"
+				return "ERROR OCCURED WHILE TAKING YOUR REQUEST.\nPLEASE CHECK YOUR INTERNET CONNECTION"
 		
 
 		return render_template("SearchBar.html", name=session["user"])
@@ -96,11 +103,12 @@ def search():
 
 @app.route("/repositories")
 def repos():
+	title="Repositories"
 	if "user" in session:
 		gitname=session["gitName"]
 		url='https://api.github.com/users/'+gitname+'/repos'
 		repos=requests.get(url).json()
-		return render_template("repos.html", repos=repos)
+		return render_template("repos.html", repos=repos, title=title, page=True)
 	return redirect(url_for("login"))
 
 @app.route("/logout")
@@ -109,7 +117,7 @@ def logout():
 	session.pop("gitName",None)
 	return redirect(url_for("login"))
 
-@app.route("/star")
+@app.route("/star", methods=['GET','POST'])
 def star():
 	if "user" in session:
 		gitname=session["gitName"]
@@ -122,7 +130,7 @@ def star():
 			sadd=Star(random.randint(1,100000),session["user"], gitname)
 			db.session.add(sadd)
 			db.session.commit()
-	return "User Starred"
+	return render_template("UserInfo.html", detail=session['usern'], star=True, found=True, page=True)
 
 @app.route("/unstar")
 def unstar():
@@ -135,18 +143,20 @@ def unstar():
 			#if random no. coinsides
 		except:
 			return "Already Unstarred"
-	return "User Unstarred"
+		return render_template("UserInfo.html", detail=session['usern'], star=False, found=True, page=True)
+	return redirect(url_for("login"))
 
 @app.route("/starred")
 def starred():
 	if "user" in session:
+		su=True
 		star=Star.query.filter_by(userid=session["user"]).all()
 		std=[]
 		for s in star:
 			std.append(s.stared)
 		if not std:
-			return "No Starred Usernames"
-		return render_template("starred.html", stars=std)
+			su=False
+		return render_template("starred.html", stars=std, title="Starred Users", SUF=su, page=True)
 	return redirect(url_for("login"))
 
 if __name__=="__main__":

@@ -1,0 +1,25 @@
+{% extends "OLbase.html" %}
+{% block content %}
+<div class="div1">
+	<form method="POST">
+		<label for="username">Username</label><br>
+		<input type="text" name="Username" id="username" placeholder="Username">
+		{% if exist %}
+		<br>
+		<font style="color:red; text-align: left;">Username already taken</font>
+		{% endif %}
+		<br>
+		<label for="password">Password</label><br>
+		<input type="password" name="password" id="password" placeholder="Enter Password...">
+		<br>
+		<label for="Confpass">Re-enter Password</label><br>
+		<input type="password" name="Confpass" id="Confpass" placeholder="Re-enter Password...">
+		{% if unmatch %}
+		<br>
+		<font style="color:red; text-align: left;">Passwords didn't matched</font>
+		{% endif %}
+		<br>
+		<button type="submit" id="but"><span>Sign Up</span></button>
+	</form>
+</div>
+{% endblock %}

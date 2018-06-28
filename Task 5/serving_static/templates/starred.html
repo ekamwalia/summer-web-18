@@ -1,0 +1,95 @@
+<style type="text/css">
+	.div3{
+
+		background-color: #0b98de;
+		color: white;
+		width: 25%;
+		height: 50px;
+	}
+	.div3 a{
+		display: block;
+		text-decoration: none;
+		color: white;
+		padding-top: 16px;
+    	padding-right: 10px;
+    	padding-bottom: 15px;
+    	padding-left: 10px;
+    	text-align: center;
+    	overflow: hidden;
+	}
+	.div3 a:hover{
+		background-color: #17b0cf;
+		overflow: hidden;
+	}
+	.div4{
+
+		background-color: #0b98de;
+		color: white;
+		width: 25%;
+		height: 50px;
+		margin-left: 300px;
+		margin-top: -69px;
+		overflow: hidden;
+
+	}
+	.div4 a{
+		display: block;
+		text-decoration: none;
+		color: white;
+		padding-top: 16px;
+    	padding-right: 10px;
+    	padding-bottom: 15px;
+    	padding-left: 10px;
+    	text-align: center;
+    	overflow: hidden;
+	}
+	.div4 a:hover{
+		background-color: #17b0cf;
+		overflow: hidden;
+	}
+	.div5{
+
+		background-color: #0b98de;
+		color: white;
+		width: 25%;
+		height: 50px;
+		margin-left: 600px;
+		margin-top: -69px;
+		overflow: hidden;
+	}
+	.div5 a{
+		display: block;
+		text-decoration: none;
+		color: white;
+		padding-top: 16px;
+    	padding-right: 10px;
+    	padding-bottom: 15px;
+    	padding-left: 10px;
+    	text-align: center;
+    	overflow: hidden;
+	}
+	.div5 a:hover{
+		background-color: #17b0cf;
+		overflow: hidden;
+	}
+</style>
+
+
+{% extends "ALbase.html" %}
+
+{% block content %}
+	{% if SUF %}
+	<h2>Starred Users:</h2>
+	<div style="display: block; background-color: rgba(0, 0, 0, 0.4); margin-left: 50px; margin-right: 250px; position: relative; left:97px; padding-right: -50px;padding-left: 110px; padding-top: 20px" >
+	{% for star in stars %}
+		<div class="{{ loop.cycle('div3','div4', 'div5') }}">
+			{{ star }}
+		</div>
+		<br>	
+	{%endfor%}
+	</div>
+	{% else %}
+	<div style="display: block; background-color: rgba(0, 0, 0, 0.5); margin-left: 50px; margin-right: 250px; position: relative; left:97px; padding-right: -50px;padding-left: 100px; padding-top: 20px; text-align: center; color: white; font-size: 50px;font-family: sans-serif;letter-spacing: -1px">No Starred users Marked!
+	</div>
+	{% endif %}
+{% endblock %}

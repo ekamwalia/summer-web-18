@@ -1,0 +1,176 @@
+<html>
+<head>
+	{% if title %}
+	<title>{{ title }}-Git Finder</title>
+	{% else%}
+	<title>Welcome to Git Finder</title>
+	{% endif %}
+	
+<style type="text/css">
+	body{
+		text-align: center;
+		background-image: url(../static/images/github.jpg);
+		background-size: cover;
+		background-color: #17b0cf;
+		background-repeat: no-repeat;
+	}
+
+	.navbar{
+		
+		
+		background-color: #0b98de;
+		overflow: hidden;
+		
+
+	}
+	.navbar a {
+		float: left;
+		display: block;
+		padding-top: 20px;
+    	padding-right: 10px;
+    	padding-bottom: 15px;
+    	padding-left: 10px;
+    	text-decoration: none;
+    	color: white;
+    	font-family: sans-serif;
+    	font-size: 20px;
+    	transition: all 0.3s ease;
+
+	}
+	.navbar a:hover{
+		background-color: #17b0cf;
+
+	}
+	.navbar a:active{
+		background-color: #17b0cf;
+	}
+	#hom{
+		font-family: 'Hind', sans-serif;
+ 		font-size: 30px;
+    	letter-spacing: -2px;
+  		padding-left: 20px;
+ 		padding-right: 40px;
+  		margin-right: 10px;
+  		margin-top: -10px;
+	}
+	#lef{
+		float: right;
+		padding-right: 50px
+	}
+
+</style>
+<style type="text/css">
+	
+	.div1{
+		background-color: #0b98de;
+		overflow: hidden;
+		display: block;
+		float:right;
+		color: white;
+		font-family: sans-serif;
+		margin-right: 140px;
+		padding: 50px;
+		box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+		text-align: left;
+	}
+	#but{
+		background-color: #008CBA;
+		border: none;
+		font-size: 20px;
+		padding: 10px 24px;
+		text-align: center;
+		color: white;
+		transition-duration: 0.3s;
+		width: 100%;
+		cursor: pointer;
+		margin-top: 10px;
+	}
+
+	#but span {
+	    cursor: pointer;
+	    display: inline-block;
+	    position: relative;
+	    transition: 0.5s;
+    }
+
+	#but span:after {
+	    content: '\00bb';
+	    position: absolute;
+	    opacity: 0;
+	    top: 0;
+	    right: -20px;
+	    transition: 0.5s;
+	}
+	#but:hover span {
+    	padding-right: 25px;
+	}
+
+	#but:hover span:after {
+	    opacity: 1;
+	    right: 0;
+	}
+
+	input[type=text] {
+	    width: 100%;
+	    padding: 10px 24px;
+	    margin: 8px 0;
+	    box-sizing: border-box;
+	    border: 3px solid #ccc;
+	    -webkit-transition: 0.5s;
+	    transition: 0.5s;
+	    outline: none;
+	    border-radius: 0px;
+	}
+	input[type=password] {
+	    width: 100%;
+	    padding: 10px 24px;
+	    margin: 8px 0;
+	    box-sizing: border-box;
+	    border: 3px solid #ccc;
+	    -webkit-transition: 0.5s;
+	    transition: 0.5s;
+	    outline: none;
+	    border-radius: 0px;
+	}
+
+
+	input[type=text]:focus {
+    	border: 3px solid #555;
+
+	}
+	input[type=password]:focus {
+    	border: 3px solid #555;
+	}
+
+</style>
+<style type="text/css">
+	.welc{
+		text-align: left;
+		padding-top: 70px;
+	}
+	#wc1{
+		color: white;
+		font-size: 100px;
+		font-family: 'Hind', sans-serif;
+		letter-spacing: -10px;
+	}
+	#wc2{
+		color:white;
+		font-size: 55px;
+		font-family: 'Hind', sans-serif;
+		letter-spacing: -2px;
+		padding-left: 160px;
+		
+	}
+</style>
+</head>
+<div class="navbar">
+	<a href="{{url_for('login')}}" id="hom" >GitFinder</a>
+	<a href="{{url_for('addAccount')}}" id="lef">Add Account</a>
+	<a href="{{url_for('login')}}" id="lef">Login</a>
+</div>
+<body>
+	<br><br><br><br>
+	{% block content %} {% endblock %}
+</body>
+</html>
