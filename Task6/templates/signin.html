@@ -4,12 +4,14 @@
     <title>Sign In</title>
 </head>
 <body>
-    <form method="POST" action="http://localhost:5000/signin">
+    <h1>Sign In</h1>
+    <form method="POST" action="">
         Username <br>
         <input type="text" name="username"><br>
         Password <br>
         <input type="Password" name="password"><br>
         <input type="submit" name="submit">
-    </form>
+    </form><br>
+    <a href='{{url_for('register')}}'>Click here to sign up</a>
 </body>
 

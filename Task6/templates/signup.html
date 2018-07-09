@@ -4,6 +4,7 @@
     <title>Sign Up</title>
 </head>
 <body>
+    <h1>Sign Up</h1>
     <form method="POST" action="">
         Username <br>
         <input type="text" name="username"><br>
@@ -11,5 +12,9 @@
         <input type="Password" name="password"><br>
         <input type="submit" name="Sign Up">
     </form>
+    <br>
+    {{status}}
+    <br>
+    <a href='{{url_for('signin')}}'>Click here to sign in</a>
 </body>
 
