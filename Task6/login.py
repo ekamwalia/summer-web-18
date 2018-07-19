@@ -59,12 +59,15 @@ def homepage ():
     if request.method=='POST':
         user=request.form['search']
         data=requests.get ('https://api.github.com/users/'+user +'/repos')
-        details=data.json() #list
-        repolist=[]
-        for repo in details:
-            repolist.append (repo['name'])
-        print (repolist)
-        return render_template('homepage.html', username=session['username'], details=repolist)
+        if data.ok:
+            details=data.json() #list
+            repolist=[]
+            for repo in details:
+                repolist.append (repo['name'])
+            return render_template('homepage.html', username=session['username'], details=repolist)
+        else:
+            return render_template('homepage.html', username=session['username'], status='User not found')
+
     return render_template('homepage.html', username=session['username'])
 
 '''
