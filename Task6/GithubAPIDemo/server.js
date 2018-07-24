@@ -2,9 +2,14 @@ const express = require('express');
 const app = express();
 const session = require('express-session');
 const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
 const mysql = require('mysql');
 const bcrypt = require('bcrypt');
+const request = require('request');
+const path = require('path');
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended : true}));
+app.use(session({secret:"secret"}));
 
 var connection = mysql.createConnection({
 	host : 'localhost',
@@ -12,12 +17,22 @@ var connection = mysql.createConnection({
 	password: '',
 	database: 'summer_web_project'
 });
-connection.connect();
 
-app.use(bodyParser.json());
-app.use(cookieParser());
-app.use(session({secret:'secret'}));
+function checkAuth(req, res, next)
+{
+	if(req.session.userid)
+		return next();
+	else
+		res.send('Log in required');
+}
 
+app.get('/login',(req,res)=>{
+    res.sendFile(path.join(__dirname,'/front'),'login.html');
+});
+
+app.get('/register',(req,res)=>{
+	res.sendFile(path.join(__dirname,'/front'),'register.html');
+})
 
 app.post('/register',(req,res)=>{
 	const uidQuery ="SELECT * FROM users WHERE userid=?";
@@ -44,6 +59,7 @@ app.post('/register',(req,res)=>{
 app.post('/login',(req,res)=>{
 	const passQuery ="SELECT password FROM users WHERE userid=? LIMIT 1";
 	connection.query(passQuery,[req.body.userid],(err,rows,fields)=>{
+
 		if(!rows.length)
 			res.json({'status':'User not found'});
 		else
@@ -51,7 +67,7 @@ app.post('/login',(req,res)=>{
 				if(result)
 				{
 					req.session.userid = req.body.userid;
-					res.json({"status":'logged in'});
+					res.redirect('/search');
 				}
 				else
 					res.json({'status':'wrong password'});
@@ -59,18 +75,30 @@ app.post('/login',(req,res)=>{
 	});
 });
 
-app.get('/home',(req,res)=>
-{
-	if(!req.session.userid)
-		res.json({'status':'Log in required'});
-	else
-	{
-		let msg = "Welcome!"+req.session.userid+"!!";
-		res.json({'message':msg});
-	}
+app.get('/search', checkAuth, (req,res)=>{
+	res.render(path.join(__dirname,'/front'),search.html);
 });
 
+app.post('/search', checkAuth, (req,res)=>{
+	var redURL = '/user/' + req.body.username;
+	res.redirect(redURL);
+});
 
+app.get('/user/:user',  (req,res)=>{
+	const user = req.params.user;
+	const userReq = 'http://api.github.com/users/' + user + '/repos';
+	request({url:userReq, headers:{'User-Agent':'Github Frontend', 'Accept' : 'application/vnd.github.v3raw+json'}},(err,result,body)=>{
+		var repos = JSON.parse(body);
+		var txt = 'Repositories: \n \n';
+		var t=1;
+		for(x in repos)
+		{
+			txt += t + '. ' + repos[x].name + '\n';
+			t++;
+		}
+		res.send(txt);
+	});
+});
 
 app.post('/logout',(req,res)=>{
 	req.session.destroy((err)=>{
@@ -80,6 +108,8 @@ app.post('/logout',(req,res)=>{
 			res.json({'status':'logged out successfully'});
 	});
 });
+
+
 
 app.listen(3000,(err)=>
 {
