@@ -84,10 +84,10 @@ app.post('/search', checkAuth, (req,res)=>{
 	res.redirect(redURL);
 });
 
-app.get('/user/:user',  (req,res)=>{
+app.get('/user/:user', checkAuth, (req,res)=>{
 	const user = req.params.user;
 	const userReq = 'http://api.github.com/users/' + user + '/repos';
-	request({url:userReq, headers:{'User-Agent':'Github Frontend', 'Accept' : 'application/vnd.github.v3raw+json'}},(err,result,body)=>{
+	request({url:userReq, headers:{'User-Agent':'Github API Example'}},(err,result,body)=>{
 		var repos = JSON.parse(body);
 		var txt = 'Repositories: \n \n';
 		var t=1;
